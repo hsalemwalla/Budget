@@ -13,7 +13,7 @@ var async = true;
 // ****************
 
 // Progress Bar with JQ Plot
-var progressBar
+var progressBar;
 // Holds the user points value
 var points;
 // While answering questions, this variable will
