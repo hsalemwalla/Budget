@@ -6,10 +6,10 @@ sendRequest(
 
 
 function sendRequest(url, data) {
-  $.ajax({
-    url: url,
-    type: 'PUT',
-    data: data,
-    dataType: 'json'
-  });
+    $.ajax({
+        url: url,
+        type: 'PUT',
+        data: data,
+        dataType: 'json'
+    });
 }
