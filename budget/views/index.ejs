@@ -1,11 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Budget Motivator</title>
+
+    <!-- Bootstrap -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+
+    <link href="/stylesheets/main.css" rel="stylesheet">
+    <link href="/stylesheets/jquery.jqplot.css" rel="stylesheet" type="text/css"  /> 
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/javascripts/jquery-2.1.1.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/javascripts/bootstrap.min.js"></script>
+    
+    <script type="text/javascript" src="/javascripts/jquery.jqplot.js"></script>
+    
+    <script type="text/javascript" src="/javascripts/plugins/jqplot.barRenderer.js"></script>
+    <script type="text/javascript" src="/javascripts/plugins/jqplot.categoryAxisRenderer.js"></script>
+    <script type="text/javascript" src="/javascripts/plugins/jqplot.pointLabels.js"></script>
+    
+
   </head>
+
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <center>
+        <div class="hover">
+            <div id="title" class="header">
+                <center>
+                    <h1>Welcome to the Budget Motivator</h1>
+                    <!--<hr>-->
+                </center>
+            </div>
+
+            <div id="leftpanel" class="col-md-2 leftpanel">
+                <div id="progressBar" class="progressBar">
+                </div>
+            </div>
+            
+            <div id="main" class="col-md-10 content">
+                <div id="question" class="row question">
+                    <h2>This is a question?</h2>
+                </div>
+                
+                <div class="answer">
+                        <button id="ans1" type="button" class="btn btn-lg btn-block ansbtn" >This is an answer!</button>
+                </div>
+                
+                <div class="answer">
+                        <button id="ans2" type="button" class="btn btn-lg btn-block ansbtn" >This is another answer!</button>
+                </div>
+                
+                <div class="answer">
+                        <button id="ans3" type="button" class="btn btn-lg btn-block ansbtn" >A final answer!</button>
+                </div>
+                
+            </div>
+        </div>
+    </center>
   </body>
 </html>
