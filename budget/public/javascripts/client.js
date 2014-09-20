@@ -94,12 +94,12 @@ function getAnswers() {
 
 function answerClick(id) {
     // Determine the button that was pressed
+    console.log('Button pressed - id: ' + id);
     if (id == 'ans1') {
 
     } else if (id == 'ans2') {
 
     } else if (id == 'ans3') {
-
     } else {
         // Another btn pressed?
     }
