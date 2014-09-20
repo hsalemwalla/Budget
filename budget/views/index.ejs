@@ -3,6 +3,15 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    
+    <script type="text/javascript" src='/javascripts/jquery.js'></script>
+    <script type="text/javascript" src='/javascripts/scripts.js'>
+        sendRequest(
+            'users/test', 
+            { data: JSON.stringify({ intent: 'test Intent'})}
+        );
+    </script>
+
   </head>
   <body>
     <h1><%= title %></h1>
