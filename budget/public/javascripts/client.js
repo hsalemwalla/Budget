@@ -1,11 +1,4 @@
 
-// HTTP Request Data
-// *****************
-var url = 'http://localhost:8080/';
-var POST = 'POST';
-var GET = 'GET';
-var async = true;
-
 
 
 
@@ -27,8 +20,8 @@ var category;
 var question;
 // An array to hold the answers fetched from the server
 var answers;
-
-
+// Holds the question code
+var code;
 
 
 
@@ -38,78 +31,50 @@ function init() {
     runningPoints = 0;
     level = 0;
     category = 'food';
+    code = 'BF';
 
     getUserPoints();
-    // The callback after we get the question will fetch the answers
-    getQuestion(category, level);
-}
-
-function postAnswer(postData) {
-
-    var requestPOST = new XMLHttpRequest();
-    requestPOST.onload = function () {      // Response callback
-    }
-    requestPOST.open(POST, url, async);
-    requestPOST.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    requestPOST.send(postData);
+    getQuestion(level, category, code);
 }
 
 function getUserPoints() {
-    var reqGetPoints = null;
-
-    reqGetPoints = new XMLHttpRequest();
-    reqGetPoints.onreadystatechange = function() {
-        alert(points);
-    };
-    reqGetPoints.open(GET, url, async );
-    reqGetPoints.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    reqGetPoints.send( null );
+    fetchRequest(
+        'users/userPoints' 
+    );
 }
 
-function getQuestion(cat, level) {
-    var reqGetQuest = null;
-    var getData = [cat,level];
-
-    reqGetQuest = new XMLHttpRequest();
-    reqGetQuest.onreadystatechange = function() {
-        alert('getQuestion()');
-    };
-    reqGetQuest.open(GET, url, async );
-    reqGetQuest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    reqGetQuest.send( getData );
+function getQuestion(lev, cat, cod) {
+    var json = {level: lev, category: cat, code: cod}
+    fetchRequest(
+        'users/question', 
+        { data: JSON.stringify(json) }
+    );
 }
 
-function getAnswers() {
-    var reqGetAns = null;
-
-    reqGetAns = new XMLHttpRequest();
-    reqGetAns.onreadystatechange = function() {
-        alert('getAnswers()');
-    };
-    reqGetAns.open(GET, url, async );
-    reqGetAns.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    reqGetAns.send( null );
-    alert('hi there world');
+function getAnswers(quest) {
+    fetchRequest(
+        'users/answers', 
+        { data: quest }
+    );
 }
 
-function answerClick(id) {
-    // Determine the button that was pressed
-    if (id == 'ans1') {
+function answerClick(id, text) {
 
-    } else if (id == 'ans2') {
-
-    } else if (id == 'ans3') {
-
-    } else {
-        // Another btn pressed?
+    if (!text || text == '') {
+        // Error
+        return;
     }
+    postAnswer(
+        'users/postAnswer', 
+        { data: JSON.stringify({t: text}) }
+    );
 
-    // Update progress
+    level++;
+    getQuestion(level, 'food', 'BF');
 
-    // Fetch next question and answers
 }
 
-function updateProgress(progress) {
+function updateProgressBar(progress) {
     // Update progress bar
     if (!progress) {
         progress = 0;
