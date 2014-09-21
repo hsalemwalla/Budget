@@ -29,7 +29,7 @@ var code;
 function init() {
     points = 0;
     runningPoints = 0;
-    level = 0;
+    level = 1;
     category = 'food';
     code = 'BF';
 
@@ -44,10 +44,12 @@ function getUserPoints() {
 }
 
 function getQuestion(lev, cat, cod) {
-    var json = {level: lev, category: cat, code: cod}
+    var json = {level: lev, category: cat, code: cod};
+    alert(JSON.stringify(json));
     fetchRequest(
         'users/question', 
-        { data: JSON.stringify(json) }
+        //{ data: JSON.stringify({level: lev, category: cat, code: cod}) }
+        { data: JSON.stringify( {level: lev, category: cat, code: cod}) }
     );
 }
 

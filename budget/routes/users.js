@@ -9,8 +9,13 @@ router.get('/userPoints', function(req, res) {
 });
 
 router.get('/question', function(req, res) {
+    var json = JSON.parse(req.body);
+
     console.log('req data question: ');
-    console.log(req.body.data);
+    //console.log(json);
+    console.log(req);
+    //console.log(req.body);
+    console.log(json.query);
     res.sendStatus(200);
 });
 
