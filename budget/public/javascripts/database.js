@@ -1,83 +1,88 @@
-var http = require('http');
-http.createServer(function (req, res) {
-    console.log('Method: '+ req.method);
-    res.end();  
-   
-  
-    if (req.method == "GET") {
-        if (req.data == "question")
-            PromptAnswer(level, category);
-        else if (req.data == "answer")
-            GetAnswerChoices(question);
-        else if (req.data == "points")
-            GetAnswerPoints(answer);
-    }
-
-    else {
-        if (req.data == "update")
-            UpdateUserPoints(totalPoints);
-    }
-        
-}).listen(8888, '127.0.0.1');
-console.log('Server running at http://127.0.0.1:8888/');
+var sqlite3 = require('sqlite3').verbose();
+var db = "/BudgetMotivator.db";
 
 
-function PromptAnswer(level, category) {
-    var table = "Questions";
-    var column = "Question";
-    var joins = ["Category"];
-    var condition = "WHERE level = " + level + " AND Category = " + category;
+function PromptAnswer(level, category, code) {
+    var table = "question";
+    var column = "question";
+    var joins = ["category"];
+    var condition = "WHERE level = " + level + " AND category = " + category + " AND code = " + code;
     var question = GetData(table, column, joins, condition);
 
-    return question; //string value
+    if (question == null)
+        return question; //string value
+    else
+        alert("questions not found");
 }
 
 function GetAnswerChoices(question) {
-    var table = "Answers";
-    var column = "Answer";
-    var joins = ["Questions"];
+    var table = "answer";
+    var column = "answer";
+    var joins = ["question"];
     var condition = "WHERE question = " + question;
 
     var choices = GetData(table, column, joins, condition);
 
-    return choices;
+    if (choices != null && choice.length > 0)
+        return choices;
+    else
+        alert("alternatives not found");
     //returns associated choices with the question (array)
 }
 
-
 function GetAnswerPoints(answer) {
-    var table = "Answers";
-    var column = "Points";
+    var table = "answer";
+    var column = "points";
     var joinTables = null;
-    var condition = "WHERE Answer = " + answer;
+    var condition = "WHERE answer = " + answer;
 
     var points = GetData(table, column, joinTables, condition);
 
-    return points; //returns points integer
+    if (points != null && points.length > 0)
+        return points;
+    else
+        alert("points not found"); //returns points integer
 }
 
 function UpdateUserPoints(totalPoints) {
-    var table = "Points";
-    var columnArray = ["DateTime", "Points"];
-    var valueArray = ["GETDATE()", totalPoints];
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+
+    if (dd < 10) {
+        dd = '0' + dd;
+    }
+
+    if (mm < 10) {
+        mm = '0' + mm;
+    }
+
+    var hh = today.getHours() < 10 ? "0" + today.getHours() : today.getHours();
+    var min = today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes();
+    var sec = today.getSeconds() < 10 ? "0" + today.getSeconds() : today.getSeconds();
+
+    var table = "points";
+    var columnArray = ["date","time", "points"];
+    var valueArray = [yyyy + "" + mm + "" + dd, hh + "" + min + "" + sec, totalPoints];
     InsertData(table, columnArray, valueArray);
 }
 
 
-
-
 function InsertData(table, columnArray, valueArray) {
-    
     var insertStatement = "INSERT INTO " + table + "(" + columnArray.join(",") + ") VALUES(" + valueArray.join(",") + ")";
 
-    //execute insert statement
-}
+    db.serialize(function () {
+        db.run(insertStatement);
+    });
 
+    db.close();
+}
 
 //table = table name to select from, column = required values, joinTables = array of table names that need to be linked to get required result, condition = data filtering where clause
 function GetData(table,column,joinTables,condition) {
     
-    var selectQuery = "SELECT " + column + " FROM " + table;
+    var selectQuery = "SELECT " + column + "AS value FROM " + table;
     
     var fullQuery = null;
     var previousTable = table;
@@ -91,8 +96,8 @@ function GetData(table,column,joinTables,condition) {
 
             var joinQuery = "JOIN " + joinTables[i]
                                 + "AS " + currentAlias
-                                + "ON " + currentAlias + "." + joinTables[i] + "ID="
-                                + previousAlias + "." + previousTable + "ID";
+                                + "ON " + currentAlias + "." + joinTables[i] + "id="
+                                + previousAlias + "." + previousTable + "id";
 
             previousTable = joinTables[i];
             previousAlias = currentAlias;
@@ -109,8 +114,17 @@ function GetData(table,column,joinTables,condition) {
                      + " " + condition;
     }
 
- 
-    //call to sql lite with full query, return result
+    var getResults = [];
 
+    db.serialize(function () {
+        db.each(fullQuery, function (err, row) {
+            if (!err)
+                getResults.push(row.value);
+        });
+    });
+
+    db.close();
+
+    return getResults;
 }
 
