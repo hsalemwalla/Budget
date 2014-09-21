@@ -8,11 +8,11 @@
     
     <script type="text/javascript" src='/javascripts/jquery.js'></script>
     <script type="text/javascript" src='/javascripts/scripts.js'></script>
-    <script type="text/javascript" src='/javascripts/index.js'></script>
+    <script type="text/javascript" src='/javascripts/client.js'></script>
 
   </head>
 
-  <body>
+  <body onLoad="init()">
     <center>
         <div class="hover">
             <div id="title" class="header">
@@ -32,15 +32,15 @@
                 </div>
                 
                 <div class="answer">
-                        <button id="ans1" type="button" class="btn btn-lg btn-block ansbtn" onclick="answerClick(this.id)">This is an answer!</button>
+                        <button type="button" id="ans1" class="btn btn-lg btn-block ansbtn" onclick="answerClick(this.id, this.innerText)">This is an answer!</button>
                 </div>
                 
                 <div class="answer">
-                        <button id="ans2" type="button" class="btn btn-lg btn-block ansbtn" onclick="answerClick(this.id)">This is another answer!</button>
+                        <button type="button" id="ans2" class="btn btn-lg btn-block ansbtn" onclick="answerClick(this.id, this.innerText)">This is another answer!</button>
                 </div>
                 
                 <div class="answer">
-                        <button id="ans3" type="button" class="btn btn-lg btn-block ansbtn" onclick="answerClick(this.id)">A final answer!</button>
+                        <button type="button" id="ans3" class="btn btn-lg btn-block ansbtn" onclick="answerClick(this.id, this.innerText)">This is a final answer!</button>
                 </div>
                 
             </div>
