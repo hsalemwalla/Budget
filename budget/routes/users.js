@@ -3,19 +3,13 @@ var router = express.Router();
 var request = require('request');
 
 router.get('/userPoints', function(req, res) {
-    console.log('req data points: ');
-    console.log(req.body.data);
+    res.send(GetUserPoints());
     res.sendStatus(200);
 });
 
-router.get('/question', function(req, res) {
-    var json = JSON.parse(req.body);
-
-    console.log('req data question: ');
-    //console.log(json);
-    console.log(req);
-    //console.log(req.body);
-    console.log(json.query);
+router.get('/question', function (req, res) {
+    console.log("data:" + req.body.data);
+   // res.send(PromptAnswer())
     res.sendStatus(200);
 });
 

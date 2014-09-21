@@ -44,6 +44,23 @@ function GetAnswerPoints(answer) {
         alert("points not found"); //returns points integer
 }
 
+function GetUserPoints() {
+    var query = "SELECT TOP 1 points FROM points ORDER BY date, time desc";
+    var currentPoints = null;
+
+        db.serialize(function () {
+            db.each(query, function (err, row) {
+                if (!err)
+                    getResults.push(row.value);
+            });
+        });
+
+    if (currentPoints!=null)
+        return currentPoints[0];
+    return 0;
+}
+
+
 function UpdateUserPoints(totalPoints) {
     var today = new Date();
     var dd = today.getDate();
